@@ -1,4 +1,4 @@
-# Chatbot guardrail latency profile (US-16234)
+# Chatbot guardrail latency profile 
 
 Throwaway latency experiment — **not part of the app build, do not commit** unless you decide to.
 Compares one chat turn in two architectures against the real `claude` CLI:
