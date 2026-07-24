@@ -1,0 +1,432 @@
+<title>Guardrail Latency Profile — US-16234</title>
+<style>
+  :root {
+    color-scheme: light;
+    --plane:      #eef0f3;
+    --surface:    #ffffff;
+    --surface-2:  #f6f7f9;
+    --ink:        #0e1116;
+    --ink-2:      #565c65;
+    --muted:      #878d97;
+    --hairline:   #e3e6ea;
+    --baseline:   #cfd3da;
+    --accent:     #2a4b8d;
+    /* chart series (validated dataviz palette, light) */
+    --c-cold:     #2a78d6;
+    --c-ttft:     #eb6834;
+    --c-gen:      #1baf7a;
+    --c-over:     #b7bcc6;
+    --shadow:     0 1px 2px rgba(14,17,22,.06), 0 6px 20px rgba(14,17,22,.05);
+    --mono: ui-monospace, "Cascadia Code", "SF Mono", "JetBrains Mono", Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --plane:#08090b; --surface:#16191d; --surface-2:#1c2025; --ink:#f2f4f7;
+      --ink-2:#aab1bb; --muted:#7f868f; --hairline:#282d33; --baseline:#3a4048;
+      --accent:#8fb0ee;
+      --c-cold:#3987e5; --c-ttft:#d95926; --c-gen:#199e70; --c-over:#4c525b;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 26px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --plane:#08090b; --surface:#16191d; --surface-2:#1c2025; --ink:#f2f4f7;
+    --ink-2:#aab1bb; --muted:#7f868f; --hairline:#282d33; --baseline:#3a4048;
+    --accent:#8fb0ee;
+    --c-cold:#3987e5; --c-ttft:#d95926; --c-gen:#199e70; --c-over:#4c525b;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 26px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--plane); color: var(--ink);
+    font-family: var(--sans); line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 72px; }
+
+  /* header */
+  .eyebrow {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 10px;
+  }
+  h1 { font-size: clamp(26px, 4vw, 38px); line-height: 1.12; margin: 0 0 12px; text-wrap: balance; letter-spacing: -.01em; }
+  .lede { max-width: 68ch; color: var(--ink-2); font-size: 16px; margin: 0; }
+  .lede code { font-family: var(--mono); font-size: 13px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+
+  /* stat tiles */
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 32px 0 8px; }
+  .tile {
+    background: var(--surface); border: 1px solid var(--hairline); border-radius: 12px;
+    padding: 16px 16px 18px; box-shadow: var(--shadow);
+  }
+  .tile .k { font-family: var(--mono); font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px; }
+  .tile .v { font-family: var(--mono); font-size: 30px; font-weight: 600; letter-spacing: -.02em; }
+  .tile .v small { font-size: 15px; font-weight: 500; color: var(--ink-2); margin-left: 2px; }
+  .tile .sub { font-size: 12.5px; color: var(--ink-2); margin: 4px 0 0; }
+  .tile.win .v { color: var(--c-gen); }
+
+  /* section */
+  section { margin-top: 34px; }
+  .panel {
+    background: var(--surface); border: 1px solid var(--hairline); border-radius: 14px;
+    padding: 22px 24px 26px; box-shadow: var(--shadow);
+  }
+  .phead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .phead h2 { font-size: 18px; margin: 0; letter-spacing: -.01em; }
+  .phead .tag { font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+  .psub { color: var(--ink-2); font-size: 13.5px; margin: 2px 0 20px; }
+
+  /* legend */
+  .legend { display: flex; gap: 18px; flex-wrap: wrap; margin: 0 0 18px; }
+  .legend .key { display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 12px; color: var(--ink-2); }
+  .legend .sw { width: 12px; height: 12px; border-radius: 3px; }
+
+  /* chart */
+  .chart { position: relative; }
+  .row { display: grid; grid-template-columns: 132px 1fr 78px; align-items: center; gap: 12px; margin: 0 0 14px; }
+  .row .rl { font-family: var(--mono); font-size: 12px; color: var(--ink); text-align: right; line-height: 1.25; }
+  .row .rl .m { display: block; color: var(--muted); font-size: 10.5px; }
+  .row .rt { font-family: var(--mono); font-size: 13px; font-weight: 600; text-align: left; font-variant-numeric: tabular-nums; }
+  .track { position: relative; height: 22px; }
+  .bar { display: flex; gap: 2px; height: 22px; width: 100%; }
+  .seg { height: 100%; min-width: 0; transition: filter .12s; }
+  .seg:hover { filter: brightness(1.08) saturate(1.1); }
+  .bar .seg:first-child { border-top-left-radius: 4px; border-bottom-left-radius: 4px; }
+  .bar .seg:last-child  { border-top-right-radius: 4px; border-bottom-right-radius: 4px; }
+  .s-cold { background: var(--c-cold); }
+  .s-ttft { background: var(--c-ttft); }
+  .s-gen  { background: var(--c-gen); }
+  .s-over { background: var(--c-over); }
+
+  /* per-iteration data points overlaid on each stage track */
+  .dots { position: absolute; inset: 0; pointer-events: none; }
+  .dot {
+    position: absolute; width: 9px; height: 9px; border-radius: 50%;
+    transform: translate(-50%, -50%); pointer-events: auto; cursor: default;
+    background: var(--ink); box-shadow: 0 0 0 2px var(--surface);
+    opacity: .82; transition: opacity .1s, transform .1s;
+  }
+  .dot:hover { opacity: 1; transform: translate(-50%, -50%) scale(1.35); }
+  .dot.mean { background: var(--surface); box-shadow: 0 0 0 2px var(--ink); opacity: 1; }
+  .legend .sw.dotkey { border-radius: 50%; background: var(--ink); box-shadow: 0 0 0 2px var(--surface); width: 9px; height: 9px; }
+
+  /* axis */
+  .axis { display: grid; grid-template-columns: 132px 1fr 78px; gap: 12px; margin-top: 4px; }
+  .ticks { position: relative; height: 20px; border-top: 1px solid var(--baseline); }
+  .ticks .t { position: absolute; top: 0; transform: translateX(-50%); font-family: var(--mono); font-size: 10.5px; color: var(--muted); padding-top: 5px; }
+  .ticks .t::before { content: ""; position: absolute; top: 0; left: 50%; width: 1px; height: 4px; background: var(--baseline); }
+  .grid { position: absolute; inset: 0; pointer-events: none; }
+  .grid .gl { position: absolute; top: -4px; bottom: 0; width: 1px; background: var(--hairline); }
+
+  /* callout */
+  .callout { background: var(--surface-2); border: 1px solid var(--hairline); border-left: 3px solid var(--accent); border-radius: 10px; padding: 18px 20px; }
+  .callout h3 { margin: 0 0 8px; font-size: 15px; }
+  .callout p { margin: 0 0 8px; color: var(--ink-2); font-size: 14px; max-width: 74ch; }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout b { color: var(--ink); }
+  .callout .num { font-family: var(--mono); font-weight: 600; }
+
+  /* table */
+  .tblwrap { overflow-x: auto; border: 1px solid var(--hairline); border-radius: 12px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { padding: 9px 14px; text-align: right; font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { background: var(--surface-2); color: var(--ink-2); font-weight: 600; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; border-bottom: 1px solid var(--hairline); }
+  tbody tr { border-bottom: 1px solid var(--hairline); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr.warm td { color: var(--muted); }
+  tbody td:first-child { color: var(--ink); }
+  .rowA td.hl { color: var(--c-ttft); }
+  tfoot td { background: var(--surface-2); font-weight: 600; border-top: 2px solid var(--baseline); }
+
+  /* method */
+  .method { font-size: 13px; color: var(--ink-2); }
+  .method h2 { color: var(--ink); }
+  .method ul { padding-left: 18px; margin: 10px 0; }
+  .method li { margin: 6px 0; max-width: 82ch; }
+  .method code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+
+  /* tooltip */
+  #tip {
+    position: fixed; pointer-events: none; z-index: 50; opacity: 0; transition: opacity .1s;
+    background: var(--ink); color: var(--surface); font-family: var(--mono); font-size: 12px;
+    padding: 8px 10px; border-radius: 7px; box-shadow: 0 6px 20px rgba(0,0,0,.28); max-width: 260px; line-height: 1.45;
+  }
+  #tip .tn { font-weight: 600; }
+  #tip .tv { opacity: .85; }
+
+  .foot { margin-top: 28px; color: var(--muted); font-family: var(--mono); font-size: 11.5px; }
+
+  h2.sh { font-size: 13px; font-family: var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; font-weight: 600; }
+
+  @media (max-width: 720px) {
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+    .row, .axis { grid-template-columns: 96px 1fr 64px; gap: 8px; }
+    .row .rl { font-size: 11px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">US-16234 · Chatbot latency profile</p>
+  <h1>Where the guardrail pipeline spends its time</h1>
+  <p class="lede">
+    One chat turn, two architectures, measured against the real <code>claude</code> CLI with the
+    project's own flags, models and prompts. <b>Pattern A</b> spawns three separate one-shot
+    processes (input guardrail → main agent → output guardrail). <b>Pattern B</b> runs all three as
+    sequential messages inside one persistent process. Each bar segment is a mean over 5 iterations.
+  </p>
+
+  <div class="tiles">
+    <div class="tile">
+      <p class="k">Pattern A · turn</p>
+      <div class="v" id="tA">–<small>s</small></div>
+      <p class="sub">3 processes, sequential</p>
+    </div>
+    <div class="tile win">
+      <p class="k">Pattern B · turn</p>
+      <div class="v" id="tB">–<small>s</small></div>
+      <p class="sub">1 persistent process</p>
+    </div>
+    <div class="tile">
+      <p class="k">B saves</p>
+      <div class="v" id="tSave">–<small>%</small></div>
+      <p class="sub" id="tSaveMs">–</p>
+    </div>
+    <div class="tile">
+      <p class="k">…of which cold-start</p>
+      <div class="v" id="tCold">–<small>%</small></div>
+      <p class="sub">the rest is warm-context speedup</p>
+    </div>
+  </div>
+
+  <section class="panel">
+    <div class="phead">
+      <h2>Pattern A — three separate processes</h2>
+      <span class="tag">guardrails: haiku · main: sonnet · cold start ×3</span>
+    </div>
+    <p class="psub">Each stage is its own cold <code>claude -p</code>. Cold start and a long time-to-first-token are paid three times.</p>
+    <div class="legend" id="legend"></div>
+    <div class="chart" id="chartA"></div>
+  </section>
+
+  <section class="panel">
+    <div class="phead">
+      <h2>Pattern B — one persistent process</h2>
+      <span class="tag">sonnet (warm) · cold start ×1</span>
+    </div>
+    <p class="psub">Cold start is paid once, up front. The guardrail stages become cheap warm follow-up messages. Same time axis as above.</p>
+    <div class="chart" id="chartB"></div>
+  </section>
+
+  <section>
+    <div class="callout">
+      <h3>The main problem is not cold start — it is the guardrail's time-to-first-token</h3>
+      <p>
+        Consolidating three processes into one warm process cuts the turn roughly in half
+        (<span class="num" id="cA">–</span> → <span class="num" id="cB">–</span>). But only about
+        <span class="num" id="cColdShare">–</span> of that saving comes from paying the ~2&nbsp;s Node
+        cold start once instead of three times.
+      </p>
+      <p>
+        The bigger loss in Pattern A is that <b>each guardrail runs as a full cold inference</b>: the
+        haiku input guardrail spends <span class="num" id="cIg">–</span> just reaching its first token
+        (thinking + a fresh, un-cached system prompt on every spawn) for what is a one-word verdict. In
+        Pattern B the same check, sent into an already-warm context, reaches first token in
+        <span class="num" id="cIgB">–</span> and generates in well under a second.
+      </p>
+      <p>
+        The <b>main agent's generation</b> (<span class="num" id="cMain">–</span>) is the irreducible core in
+        both — it is real answer tokens. Attack the guardrail overhead, not the answer.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sh">Raw data · per-iteration turn totals (ms)</h2>
+    <div class="tblwrap">
+      <table id="rawtbl">
+        <thead>
+          <tr><th>Iteration</th><th>A · input grd</th><th>A · main</th><th>A · output grd</th><th>A · turn</th><th>B · cold</th><th>B · turn</th></tr>
+        </thead>
+        <tbody id="rawbody"></tbody>
+        <tfoot id="rawfoot"></tfoot>
+      </table>
+    </div>
+    <p class="foot">Iteration 0 is a warm-up (disk / CLI cache cold) — shown muted, included in means.</p>
+  </section>
+
+  <section class="method panel">
+    <h2 class="sh">Method &amp; honest caveats</h2>
+    <ul>
+      <li><b>Harness:</b> standalone Python, spawns the real <code>claude</code> CLI v2.1.212. Cold start = wall time from <code>Process.Start</code> to the CLI's <code>system/init</code> event; time-to-first-token and generation come from the CLI's own <code>result</code> event (<code>ttft_ms</code>, <code>duration_ms</code>). The app's own code was not modified.</li>
+      <li><b>Faithful to the app</b> in flags, models and prompts (copied from <code>ChatbotPrompts.cs</code> / <code>ClaudeCliClient.cs</code> / <code>ClaudeSession.cs</code>).</li>
+      <li><b>Not apples-to-apples on the guardrail model.</b> Pattern A runs the guardrails on <code>haiku</code> with <code>--json-schema</code> (as shipped). Pattern B cannot switch model or schema per message inside one process, so its guardrail stages run on <code>sonnet</code> with the instruction inline — yet they are still far faster, because the context is warm. This strengthens, not weakens, the conclusion.</li>
+      <li><b>Main agent is tool-less</b> (no MCP server was stood up). Real turns that call HCM tools add API round-trips on top of both patterns equally.</li>
+      <li><b>N = 5</b> (credits were limited). Time-to-first-token is high-variance; treat the shape, not the third digit, as the finding.</li>
+    </ul>
+  </section>
+
+  <p class="foot" id="genline">—</p>
+</div>
+
+<div id="tip"><span class="tn"></span><br><span class="tv"></span></div>
+
+<script>
+const DATA = {
+  iterations: 5,
+  A: {
+    turnMean: 49859, coldTotal: 6509,
+    stages: [
+      {name:"Input guardrail", model:"haiku", cold:2319, ttft:10423, gen:890, overhead:610, total:14242, pts:[22125,9571,10307,16374,12834]},
+      {name:"Main agent",      model:"sonnet", cold:2120, ttft:4763,  gen:16826, overhead:373, total:24081, pts:[24489,23175,22449,23425,26868]},
+      {name:"Output guardrail", model:"haiku", cold:2070, ttft:6959, gen:1913, overhead:594, total:11536, pts:[12750,10766,10632,14298,9233]},
+    ],
+    raw: [
+      {i:0, ig:22125, main:24489, og:12750, turn:59364},
+      {i:1, ig:9571,  main:23175, og:10766, turn:43512},
+      {i:2, ig:10307, main:22449, og:10632, turn:43388},
+      {i:3, ig:16374, main:23425, og:14298, turn:54097},
+      {i:4, ig:12834, main:26868, og:9233,  turn:48934},
+    ],
+  },
+  B: {
+    turnMean: 26608, coldOnce: 1900,
+    coldPts: [2078,2056,1821,1735,1806],
+    stages: [
+      {name:"Input guardrail", model:"sonnet · warm", cold:0, ttft:3859, gen:148,   overhead:1845, total:5852, pts:[8168,7771,4549,4447,4323]},
+      {name:"Main agent",      model:"sonnet · warm", cold:0, ttft:5768, gen:11541, overhead:7,    total:17316, pts:[21841,17388,15189,11271,20889]},
+      {name:"Output guardrail", model:"sonnet · warm", cold:0, ttft:2892, gen:66,   overhead:11,   total:2969, pts:[1783,3635,2522,3831,3076]},
+    ],
+    raw: [
+      {i:0, cold:2078, turn:32458},
+      {i:1, cold:2056, turn:29217},
+      {i:2, cold:1821, turn:22683},
+      {i:3, cold:1735, turn:19926},
+      {i:4, cold:1806, turn:28756},
+    ],
+  },
+};
+
+const SEGDEF = [
+  {key:"cold",     cls:"s-cold", label:"Cold start (process boot)"},
+  {key:"ttft",     cls:"s-ttft", label:"Time to first token"},
+  {key:"gen",      cls:"s-gen",  label:"Generation (streaming)"},
+  {key:"overhead", cls:"s-over", label:"Overhead / glue"},
+];
+const SCALE_MAX = 30000;              // ms — shared x axis for both charts
+const TICKS = [0,5000,10000,15000,20000,25000,30000];
+const fmtS = ms => (ms/1000).toFixed(1);
+const fmtMs = ms => ms.toLocaleString("en-US");
+
+// ── stat tiles ──
+tA.innerHTML = fmtS(DATA.A.turnMean)+'<small>s</small>';
+tB.innerHTML = fmtS(DATA.B.turnMean)+'<small>s</small>';
+const saveMs = DATA.A.turnMean - DATA.B.turnMean;
+const savePct = Math.round(100*saveMs/DATA.A.turnMean);
+tSave.innerHTML = savePct+'<small>%</small>';
+tSaveMs.textContent = fmtS(saveMs)+' s faster per turn';
+const coldSaveMs = DATA.A.coldTotal - DATA.B.coldOnce;
+tCold.innerHTML = Math.round(100*coldSaveMs/saveMs)+'<small>%</small>';
+
+// callout figures
+cA.textContent = fmtS(DATA.A.turnMean)+' s';
+cB.textContent = fmtS(DATA.B.turnMean)+' s';
+cColdShare.textContent = Math.round(100*coldSaveMs/saveMs)+'% ('+fmtS(coldSaveMs)+' s)';
+cIg.textContent = fmtS(DATA.A.stages[0].ttft)+' s';
+cIgB.textContent = fmtS(DATA.B.stages[0].ttft)+' s';
+cMain.textContent = '~'+fmtS(DATA.A.stages[1].gen)+' s';
+
+// ── legend ──
+legend.innerHTML = SEGDEF.map(s =>
+  `<span class="key"><span class="sw ${s.cls}"></span>${s.label}</span>`).join("")
+  + `<span class="key"><span class="sw dotkey"></span>each dot = one of ${DATA.iterations} iterations (stage total)</span>`;
+
+// ── build a chart ──
+function gridLayer(){
+  let g = '<div class="grid">';
+  for(const t of TICKS){ if(t===0) continue; g += `<div class="gl" style="left:${100*t/SCALE_MAX}%"></div>`; }
+  return g + '</div>';
+}
+function bar(stage){
+  let inner = "";
+  for(const d of SEGDEF){
+    const v = stage[d.key]||0;
+    if(v<=0) continue;
+    const w = 100*v/SCALE_MAX;
+    inner += `<div class="seg ${d.cls}" style="width:${w}%" data-n="${d.label}" data-v="${fmtMs(v)} ms" data-s="${stage.name}"></div>`;
+  }
+  return `<div class="bar">${inner}</div>`;
+}
+// per-iteration data points, vertically jittered so all 5 stay visible
+function dots(pts, stageName){
+  if(!pts || !pts.length) return "";
+  let out = '<div class="dots">';
+  pts.forEach((v,idx) => {
+    const x = 100*v/SCALE_MAX;
+    const y = 50 + (idx - (pts.length-1)/2) * 15;   // spread across the track height
+    out += `<div class="dot" style="left:${x}%;top:${y}%" data-n="iteration ${idx}${idx===0?' · warm-up':''}" data-v="${fmtMs(v)} ms" data-s="${stageName}"></div>`;
+  });
+  return out + '</div>';
+}
+function row(rl, model, stage){
+  return `<div class="row">
+    <div class="rl">${rl}<span class="m">${model}</span></div>
+    <div class="track">${gridLayer()}${bar(stage)}${dots(stage.pts, stage.name)}</div>
+    <div class="rt">${fmtS(stage.total)} s</div>
+  </div>`;
+}
+function axis(){
+  let t = '<div class="axis"><div></div><div class="ticks">';
+  for(const tk of TICKS){ t += `<div class="t" style="left:${100*tk/SCALE_MAX}%">${tk/1000}s</div>`; }
+  return t + '</div><div></div></div>';
+}
+
+chartA.innerHTML = DATA.A.stages.map(s => row(s.name, s.model, s)).join("") + axis();
+
+// Pattern B: cold-start-once row first, then the three warm stages
+const coldRow = `<div class="row">
+  <div class="rl">Cold start<span class="m">once, up front</span></div>
+  <div class="track">${gridLayer()}<div class="bar"><div class="seg s-cold" style="width:${100*DATA.B.coldOnce/SCALE_MAX}%" data-n="Cold start (process boot)" data-v="${fmtMs(DATA.B.coldOnce)} ms" data-s="Paid once"></div></div>${dots(DATA.B.coldPts, "Cold start")}</div>
+  <div class="rt">${fmtS(DATA.B.coldOnce)} s</div>
+</div>`;
+chartB.innerHTML = coldRow + DATA.B.stages.map(s => row(s.name, s.model, s)).join("") + axis();
+
+// ── raw table ──
+rawbody.innerHTML = DATA.A.raw.map((a,idx) => {
+  const b = DATA.B.raw[idx];
+  const warm = a.i===0 ? ' class="warm"' : '';
+  return `<tr${warm}><td>${a.i}${a.i===0?' · warm-up':''}</td>
+    <td class="hl">${fmtMs(a.ig)}</td><td>${fmtMs(a.main)}</td><td class="hl">${fmtMs(a.og)}</td>
+    <td>${fmtMs(a.turn)}</td><td>${fmtMs(b.cold)}</td><td>${fmtMs(b.turn)}</td></tr>`;
+}).join("");
+const mean = xs => Math.round(xs.reduce((s,x)=>s+x,0)/xs.length);
+rawfoot.innerHTML = `<tr><td>mean</td>
+  <td>${fmtMs(mean(DATA.A.raw.map(r=>r.ig)))}</td>
+  <td>${fmtMs(mean(DATA.A.raw.map(r=>r.main)))}</td>
+  <td>${fmtMs(mean(DATA.A.raw.map(r=>r.og)))}</td>
+  <td>${fmtMs(DATA.A.turnMean)}</td>
+  <td>${fmtMs(DATA.B.coldOnce)}</td>
+  <td>${fmtMs(DATA.B.turnMean)}</td></tr>`;
+
+genline.textContent = "Generated from results.json · N="+DATA.iterations+" iterations · claude CLI 2.1.212";
+
+// ── tooltip ──
+const tip = document.getElementById("tip");
+const tn = tip.querySelector(".tn"), tv = tip.querySelector(".tv");
+document.addEventListener("mousemove", e => {
+  const seg = e.target.closest(".seg, .dot");
+  if(!seg){ tip.style.opacity = 0; return; }
+  tn.textContent = seg.dataset.n;
+  tv.textContent = seg.dataset.s + " — " + seg.dataset.v;
+  tip.style.opacity = 1;
+  let x = e.clientX + 14, y = e.clientY + 14;
+  const r = tip.getBoundingClientRect();
+  if(x + r.width > innerWidth - 8) x = e.clientX - r.width - 14;
+  if(y + r.height > innerHeight - 8) y = e.clientY - r.height - 14;
+  tip.style.left = x+"px"; tip.style.top = y+"px";
+});
+</script>

@@ -1,0 +1,448 @@
+{
+  "meta": {
+    "iterations": 5,
+    "main_model": "sonnet",
+    "guard_model": "haiku",
+    "user_msg": "Salam, neçə gün illik məzuniyyət balansım qalıb və onu necə istifadə edə bilərəm?",
+    "note": "iteration 0 is a warm-up (disk/CLI cache cold); kept but flagged."
+  },
+  "patternA": [
+    {
+      "stages": [
+        {
+          "cold_start_ms": 2581.9,
+          "ttft_ms": 17947,
+          "gen_ms": 988,
+          "overhead_ms": 608.3,
+          "total_ms": 22125.2,
+          "t_init_ms": 2581.9,
+          "t_first_ms": 20575.4,
+          "t_result_ms": 21437.5,
+          "duration_api_ms": 21242,
+          "cost_usd": 0.01066,
+          "result_text": "{\"allow\":true,\"category\":\"On-topic HCM question\",\"reason\":\"User is asking about their annual leave balance in Azerbaijani, which is a legitimate HCM topic.\"}",
+          "name": "input_guardrail"
+        },
+        {
+          "cold_start_ms": 2527.9,
+          "ttft_ms": 4403,
+          "gen_ms": 17142,
+          "overhead_ms": 416.0,
+          "total_ms": 24488.9,
+          "t_init_ms": 2527.9,
+          "t_first_ms": 11892.5,
+          "t_result_ms": 24002.7,
+          "duration_api_ms": 22570,
+          "cost_usd": 0.0505354,
+          "result_text": "Salam! Təəssüf ki, mənim hazırkı alətlərim vasitəsilə sizin real vaxt illik məzuniyyət balansınıza birbaşa çıxışım yoxdur, ona görə də dəqiq rəqəmi burada göstərə bilmirəm.\n\nBalansınızı yoxlamaq və istifadə etmək üçün:\n\n1. **Balansı görmək** — EIGroup HCM sistemində **PTO** modülünə daxil olun, orad",
+          "name": "main_agent"
+        },
+        {
+          "cold_start_ms": 2578.1,
+          "ttft_ms": 6729,
+          "gen_ms": 2907,
+          "overhead_ms": 535.9,
+          "total_ms": 12750.0,
+          "t_init_ms": 2578.1,
+          "t_first_ms": 9250.5,
+          "t_result_ms": 12139.7,
+          "duration_api_ms": 11486,
+          "cost_usd": 0.006012,
+          "result_text": "{\"allow\":true,\"category\":\"ok\",\"reason\":\"Normal HCM assistant response explaining appropriate tool limitations and directing user to access their own PTO balance information.\"}",
+          "name": "output_guardrail"
+        }
+      ],
+      "turn_total_ms": 59364.1,
+      "iter": 0,
+      "warmup": true
+    },
+    {
+      "stages": [
+        {
+          "cold_start_ms": 2746.8,
+          "ttft_ms": 4840,
+          "gen_ms": 1331,
+          "overhead_ms": 652.8,
+          "total_ms": 9570.7,
+          "t_init_ms": 2746.8,
+          "t_first_ms": 7568.0,
+          "t_result_ms": 8882.0,
+          "duration_api_ms": 7247,
+          "cost_usd": 0.00458,
+          "result_text": "{\"allow\":true,\"category\":\"on-topic\",\"reason\":\"Legitimate PTO inquiry in Azerbaijani, within HCM assistant scope.\"}",
+          "name": "input_guardrail"
+        },
+        {
+          "cold_start_ms": 2267.5,
+          "ttft_ms": 5915,
+          "gen_ms": 14648,
+          "overhead_ms": 344.4,
+          "total_ms": 23174.9,
+          "t_init_ms": 2267.5,
+          "t_first_ms": 11494.0,
+          "t_result_ms": 22742.7,
+          "duration_api_ms": 22034,
+          "cost_usd": 0.0463654,
+          "result_text": "Salam! Təəssüf ki, mənim EIGroup HCM sisteminə birbaşa qoşulub sizin real illik məzuniyyət balansınızı yoxlamaq imkanım yoxdur — bunun üçün müvafiq inteqrasiya bu anda əlçatan deyil.\n\nBalansınızı öyrənmək və istifadə etmək üçün:\n\n1. **Balansı yoxlamaq üçün**: EIGroup HCM portalına daxil olun → **PTO",
+          "name": "main_agent"
+        },
+        {
+          "cold_start_ms": 2220.0,
+          "ttft_ms": 7866,
+          "gen_ms": 62,
+          "overhead_ms": 618.3,
+          "total_ms": 10766.3,
+          "t_init_ms": 2220.0,
+          "t_first_ms": null,
+          "t_result_ms": 10116.2,
+          "duration_api_ms": 8942,
+          "cost_usd": 0.005135,
+          "result_text": "{\"allow\":true,\"category\":\"ok\",\"reason\":\"Reply contains no internal scaffolding leaks or unauthorized private data exposure, simply explaining system limitations and directing user to access PTO information via the HCM portal.\"}",
+          "name": "output_guardrail"
+        }
+      ],
+      "turn_total_ms": 43511.9,
+      "iter": 1,
+      "warmup": false
+    },
+    {
+      "stages": [
+        {
+          "cold_start_ms": 2006.1,
+          "ttft_ms": 7646,
+          "gen_ms": 53,
+          "overhead_ms": 602.0,
+          "total_ms": 10307.1,
+          "t_init_ms": 2006.1,
+          "t_first_ms": 9635.4,
+          "t_result_ms": 9677.9,
+          "duration_api_ms": 10042,
+          "cost_usd": 0.005429999999999999,
+          "result_text": "{\"allow\":false,\"category\":\"Off-topic for HCM assistant\",\"reason\":\"The message asks about PTO (vacation/leave) balance and usage, which is outside the scope of this assistant.\"}",
+          "name": "input_guardrail"
+        },
+        {
+          "cold_start_ms": 1898.6,
+          "ttft_ms": 4684,
+          "gen_ms": 15488,
+          "overhead_ms": 378.5,
+          "total_ms": 22449.1,
+          "t_init_ms": 1898.6,
+          "t_first_ms": 9200.8,
+          "t_result_ms": 22042.9,
+          "duration_api_ms": 23540,
+          "cost_usd": 0.0528724,
+          "result_text": "Salam! Təəssüf ki, hazırda sizin real illik məzuniyyət balansınızı sistemdən birbaşa çəkə biləcəyim bir alət mövcud deyil, ona görə də dəqiq günlərinizi burada göstərə bilmirəm.\n\nBalansınızı yoxlamaq və məzuniyyət tələb etmək üçün adətən aşağıdakı addımları izləyə bilərsiniz:\n\n1. **PTO modulunu açın",
+          "name": "main_agent"
+        },
+        {
+          "cold_start_ms": 1833.0,
+          "ttft_ms": 5678,
+          "gen_ms": 2526,
+          "overhead_ms": 594.6,
+          "total_ms": 10631.6,
+          "t_init_ms": 1833.0,
+          "t_first_ms": 7491.7,
+          "t_result_ms": 10004.0,
+          "duration_api_ms": 9192,
+          "cost_usd": 0.005184,
+          "result_text": "{\"allow\":true,\"category\":\"ok\",\"reason\":\"Response appropriately declines to access private PTO data and offers legitimate alternatives without leaking internal details.\"}",
+          "name": "output_guardrail"
+        }
+      ],
+      "turn_total_ms": 43387.8,
+      "iter": 2,
+      "warmup": false
+    },
+    {
+      "stages": [
+        {
+          "cold_start_ms": 2193.9,
+          "ttft_ms": 12102,
+          "gen_ms": 1456,
+          "overhead_ms": 622.1,
+          "total_ms": 16374.0,
+          "t_init_ms": 2193.9,
+          "t_first_ms": 14275.8,
+          "t_result_ms": 15750.0,
+          "duration_api_ms": 14725,
+          "cost_usd": 0.008890000000000002,
+          "result_text": "{\"allow\":true,\"category\":\"On-topic HCM question\",\"reason\":\"User is asking about PTO leave balance and usage, which is a core HCM function.\"}",
+          "name": "input_guardrail"
+        },
+        {
+          "cold_start_ms": 1819.0,
+          "ttft_ms": 4519,
+          "gen_ms": 16721,
+          "overhead_ms": 366.1,
+          "total_ms": 23425.2,
+          "t_init_ms": 1819.0,
+          "t_first_ms": 11849.5,
+          "t_result_ms": 23021.9,
+          "duration_api_ms": 23302,
+          "cost_usd": 0.0498304,
+          "result_text": "Salam! Təəssüf ki, hazırda sizin şəxsi illik məzuniyyət balansınızı birbaşa yoxlaya bilmirəm — bu məlumatı yalnız EIGroup HCM sistemindəki **PTO** modulundan görə bilərsiniz.\n\nBalansınızı yoxlamaq və istifadə etmək üçün:\n\n1. **Balansı görmək:** HCM sisteminə daxil olun → **PTO** bölməsinə keçin. Ora",
+          "name": "main_agent"
+        },
+        {
+          "cold_start_ms": 1872.8,
+          "ttft_ms": 9584,
+          "gen_ms": 2252,
+          "overhead_ms": 589.2,
+          "total_ms": 14298.1,
+          "t_init_ms": 1872.8,
+          "t_first_ms": 11440.2,
+          "t_result_ms": 13680.6,
+          "duration_api_ms": 13143,
+          "cost_usd": 0.007033,
+          "result_text": "{\"allow\":true,\"category\":\"ok\",\"reason\":\"Assistant appropriately refuses direct access to user's personal data and directs them to the proper system module; no internal scaffolding or third-party private data exposed.\"}",
+          "name": "output_guardrail"
+        }
+      ],
+      "turn_total_ms": 54097.3,
+      "iter": 3,
+      "warmup": false
+    },
+    {
+      "stages": [
+        {
+          "cold_start_ms": 2066.9,
+          "ttft_ms": 9581,
+          "gen_ms": 621,
+          "overhead_ms": 565.1,
+          "total_ms": 12834.0,
+          "t_init_ms": 2066.9,
+          "t_first_ms": 11606.2,
+          "t_result_ms": 12216.0,
+          "duration_api_ms": 11627,
+          "cost_usd": 0.006359999999999999,
+          "result_text": "{\"allow\":true,\"category\":\"On-topic\",\"reason\":\"Legitimate PTO/vacation balance inquiry in Azerbaijani, on-topic for HCM assistant.\"}",
+          "name": "input_guardrail"
+        },
+        {
+          "cold_start_ms": 2086.0,
+          "ttft_ms": 4292,
+          "gen_ms": 20129,
+          "overhead_ms": 360.5,
+          "total_ms": 26867.5,
+          "t_init_ms": 2086.0,
+          "t_first_ms": 12454.9,
+          "t_result_ms": 26432.1,
+          "duration_api_ms": 25789,
+          "cost_usd": 0.0724925,
+          "result_text": "Salam! Təəssüf ki, hazırda sizin şəxsi illik məzuniyyət balansınızı birbaşa yoxlaya biləcəyim bir alət mövcud deyil, ona görə də dəqiq rəqəmi buradan görə bilmirəm.\n\nBalansınızı yoxlamaq və istifadə etmək üçün:\n\n1. **Balansı görmək:** EIGroup HCM sistemində **PTO** modülünə daxil olun — orada cari i",
+          "name": "main_agent"
+        },
+        {
+          "cold_start_ms": 1845.5,
+          "ttft_ms": 4938,
+          "gen_ms": 1817,
+          "overhead_ms": 632.2,
+          "total_ms": 9232.7,
+          "t_init_ms": 1845.5,
+          "t_first_ms": 6774.5,
+          "t_result_ms": 8574.8,
+          "duration_api_ms": 7919,
+          "cost_usd": 0.005024999999999999,
+          "result_text": "{\"allow\":true,\"category\":\"ok\",\"reason\":\"No internal scaffolding or private data exposed; contains only generic instructions for accessing the user's own leave balance in their HCM system.\"}",
+          "name": "output_guardrail"
+        }
+      ],
+      "turn_total_ms": 48934.2,
+      "iter": 4,
+      "warmup": false
+    }
+  ],
+  "patternB": [
+    {
+      "cold_start_ms": 2078.4,
+      "stages": [
+        {
+          "name": "input_guardrail",
+          "ttft_ms": 6039,
+          "gen_ms": 124,
+          "msg_total_ms": 8168.4,
+          "duration_ms": 6163,
+          "duration_api_ms": 7300,
+          "cost_usd": 0.0354553,
+          "result_text": "{\"allow\":true,\"category\":\"none\",\"reason\":\"On-topic PTO balance and usage question in Azerbaijani, no policy violations.\"}"
+        },
+        {
+          "name": "main_agent",
+          "ttft_ms": 3406,
+          "gen_ms": 18424,
+          "msg_total_ms": 21841.4,
+          "duration_ms": 21830,
+          "duration_api_ms": 29086,
+          "cost_usd": 0.0840532,
+          "result_text": "Salam! Təəssüf ki, hazırda sizin illik məzuniyyət balansınızı avtomatik yoxlaya biləcəyim bir alət qoşulu deyil, ona görə də dəqiq qalan gün sayını birbaşa deyə bilmirəm.\n\nBalansınızı görmək və məzuniyyət tələbi vermək üçün ümumi addımlar belədir:\n\n1. **PTO modulu** — HCM sistemində \"PTO\" / \"Məzuniy"
+        },
+        {
+          "name": "output_guardrail",
+          "ttft_ms": 1684,
+          "gen_ms": 87,
+          "msg_total_ms": 1782.9,
+          "duration_ms": 1771,
+          "duration_api_ms": 30836,
+          "cost_usd": 0.10317309999999999,
+          "result_text": "{\"allow\":true,\"category\":\"ok\",\"reason\":\"No internal scaffolding or private data is exposed; general guidance only.\"}"
+        }
+      ],
+      "turn_total_ms": 32458.1,
+      "iter": 0,
+      "warmup": true
+    },
+    {
+      "cold_start_ms": 2055.9,
+      "stages": [
+        {
+          "name": "input_guardrail",
+          "ttft_ms": 5474,
+          "gen_ms": 315,
+          "msg_total_ms": 7771.0,
+          "duration_ms": 5789,
+          "duration_api_ms": 7080,
+          "cost_usd": 0.0116806,
+          "result_text": "{\"allow\":true,\"category\":\"none\",\"reason\":\"On-topic PTO balance and usage question in Azerbaijani, no policy violations.\"}"
+        },
+        {
+          "name": "main_agent",
+          "ttft_ms": 6057,
+          "gen_ms": 11325,
+          "msg_total_ms": 17387.9,
+          "duration_ms": 17382,
+          "duration_api_ms": 24433,
+          "cost_usd": 0.0326419,
+          "result_text": "Salam! Təəssüf ki, hazırda sizin real illik məzuniyyət balansınızı bu söhbətdən birbaşa göstərə bilmirəm — bunun üçün EIGroup HCM sistemində müvafiq inteqrasiya/icazə lazımdır.\n\nBalansınızı və istifadə qaydasını yoxlamaq üçün:\n\n1. **Balansı görmək**: HCM portalında **PTO (Time Off)** bölməsinə daxil"
+        },
+        {
+          "name": "output_guardrail",
+          "ttft_ms": 3548,
+          "gen_ms": 74,
+          "msg_total_ms": 3634.9,
+          "duration_ms": 3622,
+          "duration_api_ms": 28014,
+          "cost_usd": 0.0520852,
+          "result_text": "{\"allow\":true,\"category\":\"ok\",\"reason\":\"No internal scaffolding or private data is disclosed; general PTO guidance only.\"}"
+        }
+      ],
+      "turn_total_ms": 29216.6,
+      "iter": 1,
+      "warmup": false
+    },
+    {
+      "cold_start_ms": 1821.4,
+      "stages": [
+        {
+          "name": "input_guardrail",
+          "ttft_ms": 2657,
+          "gen_ms": 110,
+          "msg_total_ms": 4548.7,
+          "duration_ms": 2767,
+          "duration_api_ms": 3977,
+          "cost_usd": 0.0116306,
+          "result_text": "{\"allow\":true,\"category\":\"none\",\"reason\":\"On-topic PTO balance question in Azerbaijani, no policy violations.\"}"
+        },
+        {
+          "name": "main_agent",
+          "ttft_ms": 3293,
+          "gen_ms": 11890,
+          "msg_total_ms": 15189.2,
+          "duration_ms": 15183,
+          "duration_api_ms": 19134,
+          "cost_usd": 0.0322772,
+          "result_text": "Salam! Təəssüf ki, mənim hazırda sizin şəxsi illik məzuniyyət balansınızı birbaşa yoxlamaq imkanım yoxdur (bu funksiya hazırda əlçatan deyil).\n\nBalansınızı görmək və məzuniyyətdən istifadə etmək üçün:\n\n1. **Balansı yoxlamaq**: EIGroup HCM sistemində **PTO (Məzuniyyət)** modülünə daxil olun — ana səh"
+        },
+        {
+          "name": "output_guardrail",
+          "ttft_ms": 2452,
+          "gen_ms": 59,
+          "msg_total_ms": 2521.9,
+          "duration_ms": 2511,
+          "duration_api_ms": 21603,
+          "cost_usd": 0.050834599999999994,
+          "result_text": "{\"allow\":true,\"category\":\"ok\",\"reason\":\"Reply contains general PTO guidance with no scaffolding leaks or private data exposure.\"}"
+        }
+      ],
+      "turn_total_ms": 22682.9,
+      "iter": 2,
+      "warmup": false
+    },
+    {
+      "cold_start_ms": 1735.3,
+      "stages": [
+        {
+          "name": "input_guardrail",
+          "ttft_ms": 2690,
+          "gen_ms": 60,
+          "msg_total_ms": 4447.1,
+          "duration_ms": 2750,
+          "duration_api_ms": 4131,
+          "cost_usd": 0.0116006,
+          "result_text": "{\"allow\":true,\"category\":\"none\",\"reason\":\"On-topic HCM question about the user's PTO balance and how to use it.\"}"
+        },
+        {
+          "name": "main_agent",
+          "ttft_ms": 11071,
+          "gen_ms": 194,
+          "msg_total_ms": 11270.8,
+          "duration_ms": 11265,
+          "duration_api_ms": 15365,
+          "cost_usd": 0.028050199999999997,
+          "result_text": "Salam! Təəssüf ki, hazırda sizin illik məzuniyyət balansınıza birbaşa çıxışım yoxdur (bu funksiya üçün lazım olan bağlantı hazırda aktivləşdirilməyib).\n\nBalansınızı öyrənmək və istifadə etmək üçün:\n\n1. **EIGroup HCM sisteminə daxil olun** və PTO (İllik Məzuniyyət) bölməsinə keçin — orada cari balans"
+        },
+        {
+          "name": "output_guardrail",
+          "ttft_ms": 3746,
+          "gen_ms": 76,
+          "msg_total_ms": 3830.8,
+          "duration_ms": 3822,
+          "duration_api_ms": 19140,
+          "cost_usd": 0.044129,
+          "result_text": "{\"allow\":true,\"category\":\"ok\",\"reason\":\"No internal scaffolding or private data is exposed; it only gives general guidance.\"}"
+        }
+      ],
+      "turn_total_ms": 19926.0,
+      "iter": 3,
+      "warmup": false
+    },
+    {
+      "cold_start_ms": 1806.3,
+      "stages": [
+        {
+          "name": "input_guardrail",
+          "ttft_ms": 2433,
+          "gen_ms": 133,
+          "msg_total_ms": 4323.2,
+          "duration_ms": 2566,
+          "duration_api_ms": 2490,
+          "cost_usd": 0.0107856,
+          "result_text": "{\"allow\":true,\"category\":\"none\",\"reason\":\"On-topic PTO balance and usage question in Azerbaijani, no policy violations.\"}"
+        },
+        {
+          "name": "main_agent",
+          "ttft_ms": 5013,
+          "gen_ms": 15870,
+          "msg_total_ms": 20888.6,
+          "duration_ms": 20883,
+          "duration_api_ms": 26458,
+          "cost_usd": 0.06128619999999999,
+          "result_text": "Salam! Təəssüf ki, hazırda mənim sizin illik məzuniyyət balansınıza real vaxt rejimində birbaşa girişim yoxdur (bu sessiyada HCM məlumat bazasına qoşulma mövcud deyil), ona görə də dəqiq gün sayını sizə birbaşa deyə bilmirəm.\n\nBalansınızı yoxlamaq və məzuniyyət götürmək üçün adətən bu addımları izlə"
+        },
+        {
+          "name": "output_guardrail",
+          "ttft_ms": 3031,
+          "gen_ms": 33,
+          "msg_total_ms": 3076.1,
+          "duration_ms": 3064,
+          "duration_api_ms": 29483,
+          "cost_usd": 0.08146239999999999,
+          "result_text": "{\"allow\":true,\"category\":\"ok\",\"reason\":\"No internal scaffolding or another person's private data is exposed; it only gives general guidance and explains a tool-access limitation.\"}"
+        }
+      ],
+      "turn_total_ms": 28756.2,
+      "iter": 4,
+      "warmup": false
+    }
+  ]
+}

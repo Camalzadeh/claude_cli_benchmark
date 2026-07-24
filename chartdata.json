@@ -1,0 +1,304 @@
+{
+  "meta": {
+    "iterations": 5,
+    "main_model": "sonnet",
+    "guard_model": "haiku",
+    "user_msg": "Salam, neçə gün illik məzuniyyət balansım qalıb və onu necə istifadə edə bilərəm?",
+    "note": "iteration 0 is a warm-up (disk/CLI cache cold); kept but flagged."
+  },
+  "A": {
+    "stages": {
+      "input_guardrail": {
+        "cold": 2319.1,
+        "ttft": 10423.2,
+        "gen": 889.8,
+        "overhead": 610.1,
+        "total": 14242.2
+      },
+      "main_agent": {
+        "cold": 2119.8,
+        "ttft": 4762.6,
+        "gen": 16825.6,
+        "overhead": 373.1,
+        "total": 24081.1
+      },
+      "output_guardrail": {
+        "cold": 2069.9,
+        "ttft": 6959.0,
+        "gen": 1912.8,
+        "overhead": 594.0,
+        "total": 11535.7
+      }
+    },
+    "turn_mean": 49859.1,
+    "cold_total": 6508.8,
+    "raw": [
+      {
+        "iter": 0,
+        "warmup": true,
+        "turn": 59364.1,
+        "stages": {
+          "input_guardrail": {
+            "cold": 2581.9,
+            "ttft": 17947,
+            "gen": 988,
+            "total": 22125.2
+          },
+          "main_agent": {
+            "cold": 2527.9,
+            "ttft": 4403,
+            "gen": 17142,
+            "total": 24488.9
+          },
+          "output_guardrail": {
+            "cold": 2578.1,
+            "ttft": 6729,
+            "gen": 2907,
+            "total": 12750.0
+          }
+        }
+      },
+      {
+        "iter": 1,
+        "warmup": false,
+        "turn": 43511.9,
+        "stages": {
+          "input_guardrail": {
+            "cold": 2746.8,
+            "ttft": 4840,
+            "gen": 1331,
+            "total": 9570.7
+          },
+          "main_agent": {
+            "cold": 2267.5,
+            "ttft": 5915,
+            "gen": 14648,
+            "total": 23174.9
+          },
+          "output_guardrail": {
+            "cold": 2220.0,
+            "ttft": 7866,
+            "gen": 62,
+            "total": 10766.3
+          }
+        }
+      },
+      {
+        "iter": 2,
+        "warmup": false,
+        "turn": 43387.8,
+        "stages": {
+          "input_guardrail": {
+            "cold": 2006.1,
+            "ttft": 7646,
+            "gen": 53,
+            "total": 10307.1
+          },
+          "main_agent": {
+            "cold": 1898.6,
+            "ttft": 4684,
+            "gen": 15488,
+            "total": 22449.1
+          },
+          "output_guardrail": {
+            "cold": 1833.0,
+            "ttft": 5678,
+            "gen": 2526,
+            "total": 10631.6
+          }
+        }
+      },
+      {
+        "iter": 3,
+        "warmup": false,
+        "turn": 54097.3,
+        "stages": {
+          "input_guardrail": {
+            "cold": 2193.9,
+            "ttft": 12102,
+            "gen": 1456,
+            "total": 16374.0
+          },
+          "main_agent": {
+            "cold": 1819.0,
+            "ttft": 4519,
+            "gen": 16721,
+            "total": 23425.2
+          },
+          "output_guardrail": {
+            "cold": 1872.8,
+            "ttft": 9584,
+            "gen": 2252,
+            "total": 14298.1
+          }
+        }
+      },
+      {
+        "iter": 4,
+        "warmup": false,
+        "turn": 48934.2,
+        "stages": {
+          "input_guardrail": {
+            "cold": 2066.9,
+            "ttft": 9581,
+            "gen": 621,
+            "total": 12834.0
+          },
+          "main_agent": {
+            "cold": 2086.0,
+            "ttft": 4292,
+            "gen": 20129,
+            "total": 26867.5
+          },
+          "output_guardrail": {
+            "cold": 1845.5,
+            "ttft": 4938,
+            "gen": 1817,
+            "total": 9232.7
+          }
+        }
+      }
+    ]
+  },
+  "B": {
+    "cold_once": 1899.5,
+    "stages": {
+      "input_guardrail": {
+        "ttft": 3858.6,
+        "gen": 148.4,
+        "overhead": 1844.7,
+        "total": 5851.7
+      },
+      "main_agent": {
+        "ttft": 5768.0,
+        "gen": 11540.6,
+        "overhead": 7.0,
+        "total": 17315.6
+      },
+      "output_guardrail": {
+        "ttft": 2892.2,
+        "gen": 65.8,
+        "overhead": 11.3,
+        "total": 2969.3
+      }
+    },
+    "turn_mean": 26608.0,
+    "raw": [
+      {
+        "iter": 0,
+        "warmup": true,
+        "turn": 32458.1,
+        "cold": 2078.4,
+        "stages": {
+          "input_guardrail": {
+            "ttft": 6039,
+            "gen": 124,
+            "total": 8168.4
+          },
+          "main_agent": {
+            "ttft": 3406,
+            "gen": 18424,
+            "total": 21841.4
+          },
+          "output_guardrail": {
+            "ttft": 1684,
+            "gen": 87,
+            "total": 1782.9
+          }
+        }
+      },
+      {
+        "iter": 1,
+        "warmup": false,
+        "turn": 29216.6,
+        "cold": 2055.9,
+        "stages": {
+          "input_guardrail": {
+            "ttft": 5474,
+            "gen": 315,
+            "total": 7771.0
+          },
+          "main_agent": {
+            "ttft": 6057,
+            "gen": 11325,
+            "total": 17387.9
+          },
+          "output_guardrail": {
+            "ttft": 3548,
+            "gen": 74,
+            "total": 3634.9
+          }
+        }
+      },
+      {
+        "iter": 2,
+        "warmup": false,
+        "turn": 22682.9,
+        "cold": 1821.4,
+        "stages": {
+          "input_guardrail": {
+            "ttft": 2657,
+            "gen": 110,
+            "total": 4548.7
+          },
+          "main_agent": {
+            "ttft": 3293,
+            "gen": 11890,
+            "total": 15189.2
+          },
+          "output_guardrail": {
+            "ttft": 2452,
+            "gen": 59,
+            "total": 2521.9
+          }
+        }
+      },
+      {
+        "iter": 3,
+        "warmup": false,
+        "turn": 19926.0,
+        "cold": 1735.3,
+        "stages": {
+          "input_guardrail": {
+            "ttft": 2690,
+            "gen": 60,
+            "total": 4447.1
+          },
+          "main_agent": {
+            "ttft": 11071,
+            "gen": 194,
+            "total": 11270.8
+          },
+          "output_guardrail": {
+            "ttft": 3746,
+            "gen": 76,
+            "total": 3830.8
+          }
+        }
+      },
+      {
+        "iter": 4,
+        "warmup": false,
+        "turn": 28756.2,
+        "cold": 1806.3,
+        "stages": {
+          "input_guardrail": {
+            "ttft": 2433,
+            "gen": 133,
+            "total": 4323.2
+          },
+          "main_agent": {
+            "ttft": 5013,
+            "gen": 15870,
+            "total": 20888.6
+          },
+          "output_guardrail": {
+            "ttft": 3031,
+            "gen": 33,
+            "total": 3076.1
+          }
+        }
+      }
+    ]
+  }
+}
