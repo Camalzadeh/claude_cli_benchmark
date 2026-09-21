@@ -116,7 +116,7 @@ fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 9.0), gridspec_kw={"height_rat
 draw(ax1, rowsA, "Pattern A — three separate processes", f"3 cold spawns · turn mean {turnA/1000:.1f}s")
 draw(ax2, rowsB, "Pattern B — one persistent process", f"1 cold spawn · turn mean {turnB/1000:.1f}s  →  {round(100*(turnA-turnB)/turnA)}% faster")
 ax2.set_xlabel("wall-clock per stage (shared 0–30s axis)", fontsize=9.5, color=MUTED)
-fig.suptitle("Where the guardrail pipeline spends its time  ·  US-16234", fontsize=16, fontweight="bold", x=0.02, ha="left", y=1.0)
+fig.suptitle("Where the guardrail pipeline spends its time", fontsize=16, fontweight="bold", x=0.02, ha="left", y=1.0)
 fig.legend(handles=LEG, loc="lower center", ncol=5, frameon=False, fontsize=9.5, bbox_to_anchor=(0.5, -0.005))
 fig.tight_layout(rect=[0, 0.04, 1, 0.95])
 fig.savefig("latency_compare.png", dpi=200, bbox_inches="tight", facecolor=SURF)

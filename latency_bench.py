@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Chatbot guardrail latency benchmark (US-16234).
+Chatbot guardrail latency benchmark.
 
 Compares two architectures for one chat turn, measuring where wall-clock time is spent:
 
