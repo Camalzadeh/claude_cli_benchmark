@@ -263,9 +263,9 @@
     <h2 class="sh">Method &amp; honest caveats</h2>
     <ul>
       <li><b>Harness:</b> standalone Python, spawns the real <code>claude</code> CLI v2.1.212. Cold start = wall time from <code>Process.Start</code> to the CLI's <code>system/init</code> event; time-to-first-token and generation come from the CLI's own <code>result</code> event (<code>ttft_ms</code>, <code>duration_ms</code>). The app's own code was not modified.</li>
-      <li><b>Faithful to the app</b> in flags, models and prompts (copied from <code>ChatbotPrompts.cs</code> / <code>ClaudeCliClient.cs</code> / <code>ClaudeSession.cs</code>).</li>
+      <li><b>Faithful to the app</b> in flags, models and prompt shape. The prompts published in this repository are stand-ins of the same size and structure, not the measured application's own text.</li>
       <li><b>Not apples-to-apples on the guardrail model.</b> Pattern A runs the guardrails on <code>haiku</code> with <code>--json-schema</code> (as shipped). Pattern B cannot switch model or schema per message inside one process, so its guardrail stages run on <code>sonnet</code> with the instruction inline — yet they are still far faster, because the context is warm. This strengthens, not weakens, the conclusion.</li>
-      <li><b>Main agent is tool-less</b> (no MCP server was stood up). Real turns that call HCM tools add API round-trips on top of both patterns equally.</li>
+      <li><b>Main agent is tool-less</b> (no MCP server was stood up). Real turns that call tools add API round-trips on top of both patterns equally.</li>
       <li><b>N = 5</b> (credits were limited). Time-to-first-token is high-variance; treat the shape, not the third digit, as the finding.</li>
     </ul>
   </section>
